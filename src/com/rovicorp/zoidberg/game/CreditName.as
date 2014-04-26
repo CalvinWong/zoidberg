@@ -7,6 +7,7 @@
 	import flash.events.MouseEvent;
 	import flash.display.SpreadMethod;
 	import flash.display.Sprite;
+	import flash.events.Event;
 	
 	public class CreditName extends ZBClip {
 		private var _valid:Boolean;
@@ -42,6 +43,7 @@
 		private function onCorrect(e:MouseEvent) : void {
 			_textfield.textColor = 0x00FF00;
 			this.removeEventListener(MouseEvent.CLICK, onCorrect);
+			dispatchEvent(new Event(Event.SELECT));
 		}
 	}
 }

@@ -13,6 +13,7 @@
 	
 
 	public class DisOrDat extends ZBClip {
+		public static const GAME_TYPE_ID:int = 1;
 		private const MAX_ITEMS:int = 15;
 		
 		private var _assetOne:Object = new Object();

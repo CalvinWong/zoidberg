@@ -11,6 +11,8 @@
 	import com.rovicorp.zoidberg.components.SearchResult;
 	import com.rovicorp.constant.KeyboardConstant;
 	import flash.display.Sprite;
+	import flash.events.MouseEvent;
+	import com.rovicorp.events.GenericDataEvent;
 	
 	public class Search extends ZBClip {
 		private const COLUMNS:int = 7;
@@ -21,19 +23,16 @@
 		private var _results:Sprite;
 		
 		public function Search() {
-			this.addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 		}
 		
-		private function onAddedToStage(e:Event) : void {
-			this.removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
-			
+		protected override function init() : void {
 			_results = new Sprite();
 			_results.x = 50;
 			_results.y = 70;
 			addChild(_results);			
 			
 			_searchBar = new SearchBar();
-			_searchBar.x = 115;
+			_searchBar.x = 315;
 			_searchBar.y = 17;
 			_searchBar.search_field.addEventListener(KeyboardEvent.KEY_UP, onKeyboardKeyUp);
 			addChild(_searchBar);
@@ -62,8 +61,15 @@
 				var searchResult:SearchResult = new SearchResult(result);
 				searchResult.x = (i%COLUMNS) * (X_SPACING + SearchResult.CARD_WIDTH);
 				searchResult.y = Math.floor(i/COLUMNS) * (Y_SPACING + SearchResult.CARD_HEIGHT);
+				searchResult.mouseChildren = false;
+				searchResult.addEventListener(MouseEvent.CLICK, onResultSelected);
 				_results.addChild(searchResult);
 			}
+		}
+		
+		private function onResultSelected(e:MouseEvent) : void {
+			var searchResult:SearchResult = e.target as SearchResult;
+			dispatchEvent(new GenericDataEvent(GenericDataEvent.DATA_SELECTED, searchResult.data));
 		}
 	}
 }

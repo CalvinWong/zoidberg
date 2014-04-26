@@ -32,9 +32,20 @@
 			var endpoint:String = "/game/" + id;
 			super.load(endpoint);
 		}
+		/*
+		public function createTwoPlayerGame(player1_id:int, player2_id:int, game_id:int) : void {
+			var endpoint:String = "/game/create/" + player1_id + "/" + player2_id + "/" + game_id;
+			super.load(endpoint);
+		}
+		*/
 		
-		public function createGame(player1_id:int, player2_id:int, game_id:int) : void {
-			var endpoint:String = "/games/create/" + player1_id + "/" + player2_id + "/" + game_id;
+		public function finishSinglePlayerGame(gameId:int, score:int) : void {
+			var endpoint:String = "/game/" + gameId + "/finish/" + score;
+			super.load(endpoint);
+		}
+		
+		public function createSinglePlayerGame(playerId:int, gameTypeId:int) : void {
+			var endpoint:String = "/game/create/" + playerId + "/" + gameTypeId;
 			super.load(endpoint);
 		}
 	}

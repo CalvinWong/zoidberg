@@ -10,7 +10,8 @@
 	
 	import com.greensock.easing.Linear;
 	
-	public class ScrollingCredits extends ZBClip {
+	public class ScrollingCredits extends ZBClip implements IGame {
+		public static const GAME_TYPE_ID:int = 2;
 		private const MAX_ITEMS:int = 10;
 		
 		private var _assetOne:Object = new Object();
@@ -24,6 +25,7 @@
 		private var _invalidKeywords:Array;
 		
 		private var _movieTitle:TextField;
+		private var _totalPoints:int;
 		
 		public function ScrollingCredits() {
 			super();
@@ -33,24 +35,22 @@
 			_movieTitle = new TextField();
 			_movieTitle.selectable = false;
 			addChild(_movieTitle);
-			
-			exampleLoad();
 		}
 
 		
 		private function exampleLoad() : void {
 			var ids:Array = Utils.randomize(_ids).slice(0,5);
-			load(ids);
+			configure(_ids[6]);
 		}
 		
-		public function load(cosmoIds:Array) : void {
-			_inProgress = false;
-			
+		public function configure(cosmoId:String) : void {
 			_data = new Object();
-			var mainId:String = cosmoIds.shift();
-			_data.cosmoId = mainId;
-			cosmoIds.unshift(mainId);
-			
+			_data.cosmoId = cosmoId;
+			load([cosmoId].concat(_ids));
+		}
+		
+		private function load(cosmoIds:Array) : void {
+			_inProgress = false;
 			var includes:Array = ["cast"];
 			var scRequest:MetadataRequest = new MetadataRequest();
 			scRequest.addEventListener(Event.COMPLETE, onDataLoaded);
@@ -91,6 +91,7 @@
 		
 		private function start() : void {		
 			_inProgress = true;
+			_totalPoints = 0;
 			
 			_keywords = _data.validCredits.concat();
 			if(_keywords.length > MAX_ITEMS) {
@@ -112,14 +113,23 @@
 		}
 		
 		private function scrollKeywords() : void {
+			var longestTime:Number = 0;
+			var tweenTime:Number = 0;
+			var delayTime:Number = 0;
+			
 			for(var k=0; k<_invalidKeywords.length; k++) {
 				var invalidKeyword:CreditName = new CreditName(_invalidKeywords[k]);
 				addChild(invalidKeyword);
 				invalidKeyword.x = -invalidKeyword.width;
 				invalidKeyword.y = Utils.randomNumber(550) + 75;
 				invalidKeyword.alpha = .2 + Utils.randomNumber(35)/100;
-				TweenLite.to(invalidKeyword, 10 + Utils.randomNumber(40), {x:1200, ease:Linear.easeNone, delay:Utils.randomNumber(45) + Utils.randomNumber(99)/100, onComplete:destroyIt, onCompleteParams:[invalidKeyword, false]})
+				tweenTime = 10 + Utils.randomNumber(40);
+				delayTime = Utils.randomNumber(45) + Utils.randomNumber(99)/100;
+				TweenLite.to(invalidKeyword, tweenTime, {x:1200, ease:Linear.easeNone, delay:delayTime, onComplete:destroyIt, onCompleteParams:[invalidKeyword, false]})
 				
+				if(longestTime < tweenTime + delayTime) {
+					longestTime = tweenTime + delayTime;
+				}
 			}
 			
 			for(var i=0; i<_keywords.length; i++) {
@@ -128,8 +138,30 @@
 				validKeyword.x = -validKeyword.width;
 				validKeyword.y = Utils.randomNumber(550) + 75;
 				validKeyword.alpha = .25 + Utils.randomNumber(45)/100;
+				validKeyword.addEventListener(Event.SELECT, onPointScored);
+				tweenTime = 10 + Utils.randomNumber(40);
+				delayTime = Utils.randomNumber(45) + Utils.randomNumber(99)/100;
 				TweenLite.to(validKeyword, 10 + Utils.randomNumber(40), {x:1200, ease:Linear.easeNone, delay: Utils.randomNumber(45) + Utils.randomNumber(99)/100, onComplete:destroyIt, onCompleteParams:[validKeyword, false]})
+					
+				if(longestTime < tweenTime + delayTime) {
+					longestTime = tweenTime + delayTime;
+				}
 			}
+			
+			longestTime += 1;
+			TweenLite.to(this, 1, {alpha:0, delay: longestTime, onComplete:onGameFinished});
+		}
+		
+		private function onPointScored(e:Event) : void {
+			_totalPoints++;
+		}
+		
+		private function onGameFinished() : void {
+			dispatchEvent(new Event(Event.COMPLETE));
+		}
+		
+		public function get points() : int {
+			return _totalPoints;
 		}
 	}
 }
