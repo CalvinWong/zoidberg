@@ -5,7 +5,7 @@
 	import com.rovicorp.constant.KeyboardConstant;
 	import com.rovicorp.display.ZBClip;
 	import com.rovicorp.utils.Utils;
-	import com.rovicorp.zoidberg.net.MovieBatchRequest;
+	import com.rovicorp.zoidberg.net.MetadataRequest;
 	
 	import com.rovicorp.utils.Utils;
 	
@@ -53,9 +53,9 @@
 				_assetTwo.cast = new Array();				
 				
 				var includes:Array = ["cast"];
-				var mbRequest:MovieBatchRequest = new MovieBatchRequest();
+				var mbRequest:MetadataRequest = new MetadataRequest();
 				mbRequest.addEventListener(Event.COMPLETE, onDataLoaded);
-				mbRequest.loadIds(items, includes);
+				mbRequest.getVideos(items, includes);
 			}
 		}
 		
@@ -75,7 +75,7 @@
 		}
 		
 		private function onDataLoaded(e:Event) : void {
-			var mbRequest:MovieBatchRequest = e.target as MovieBatchRequest;
+			var mbRequest:MetadataRequest = e.target as MetadataRequest;
 			var data:Object = mbRequest.data;
 			
 			for each(var video:Object in data.videos) {

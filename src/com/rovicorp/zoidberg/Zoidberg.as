@@ -16,8 +16,8 @@
 		private function onAddedToStage(e:Event) : void {
 			this.removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 			
-			//var search:Search = new Search();
-			//addChild(search);
+			var search:Search = new Search();
+			addChild(search);
 			
 			//var disOrDat:DisOrDat = new DisOrDat();
 			
@@ -27,8 +27,11 @@
 			
 			//addChild(disOrDat);
 			
-			var scrollingCredits:ScrollingCredits = new ScrollingCredits();
-			addChild(scrollingCredits);
+			//var scrollingCredits:ScrollingCredits = new ScrollingCredits();
+			//addChild(scrollingCredits);
+			
+			//var loginScreen:LoginScreen = new LoginScreen();
+			//addChild(loginScreen);
 		}
 		
 		private function gameCreated(e:Event) {

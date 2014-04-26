@@ -3,7 +3,7 @@
 	
 	import com.rovicorp.display.ZBClip;
 	import com.rovicorp.utils.Utils;
-	import com.rovicorp.zoidberg.net.MovieBatchRequest;
+	import com.rovicorp.zoidberg.net.MetadataRequest;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	import com.greensock.TweenLite;
@@ -52,13 +52,13 @@
 			cosmoIds.unshift(mainId);
 			
 			var includes:Array = ["cast"];
-			var scRequest:MovieBatchRequest = new MovieBatchRequest();
+			var scRequest:MetadataRequest = new MetadataRequest();
 			scRequest.addEventListener(Event.COMPLETE, onDataLoaded);
-			scRequest.loadIds(cosmoIds, includes);
+			scRequest.getVideos(cosmoIds, includes);
 		}
 		
 		private function onDataLoaded(e:Event) : void {
-			var mbRequest:MovieBatchRequest = e.target as MovieBatchRequest;
+			var mbRequest:MetadataRequest = e.target as MetadataRequest;
 			var data:Object = mbRequest.data;
 			
 			_data.validCredits = new Array();

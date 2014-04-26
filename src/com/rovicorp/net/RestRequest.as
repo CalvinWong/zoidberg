@@ -14,9 +14,8 @@
 			_baseUrl = baseUrl;
 		}
 		
-		public function load(endpoint:String) : void {
+		protected function load(endpoint:String) : void {
 			var url:String = _baseUrl + endpoint + _apiKey;
-			//trace("loading " + url);
 			
 			_urlLoader = new URLLoader();
 			_urlLoader.addEventListener(Event.COMPLETE, onComplete);
@@ -24,7 +23,6 @@
 		}
 		
 		private function onComplete(e:Event) : void {
-			//trace("loaded " + _urlLoader.data);
 			this.dispatchEvent(new Event(Event.COMPLETE));
 		}
 		
