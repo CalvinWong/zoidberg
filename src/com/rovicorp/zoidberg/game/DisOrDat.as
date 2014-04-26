@@ -12,16 +12,22 @@
 	import com.greensock.TweenLite;
 	
 
-	public class DisOrDat extends ZBClip {
+	public class DisOrDat extends ZBClip implements IGame {
 		public static const GAME_TYPE_ID:int = 1;
+		public static const GAME_NAME:String = "This or That";
+		public static const GAME_INSTRUCTIONS:String = "Two movie titles will appear on the left and right.  A clue in the middle will be associated to one of the movies.  Score points by choosing the correct movie the clue is from.";
+		
 		private const MAX_ITEMS:int = 15;
 		
 		private var _assetOne:Object = new Object();
 		private var _assetTwo:Object = new Object();
-		private var _clueCast:Array = new Array();
+		private var _clueCast:Array = new Array(); 
 		
 		private var _inProgress:Boolean = false;
 		private var _ids:Array = [4890999, 5794242, 8904844, 4002386, 62213, 8904814, 11375010, 8904876, 125613, 189456, 14379312, 8904817, 98294, 8904882, 2947129];
+		
+		private var _points:int;
+		private var _cosmoId:String;
 		
 		public function DisOrDat() {
 			super();
@@ -30,17 +36,13 @@
 		protected override function init() : void {
 			this.x = 25;
 			this.y = 50;
-			stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyboardDown);
-			
-			exampleLoad();
 		}
 		
-		public function exampleLoad() : void {
-			var items:Array = Utils.randomize(_ids).slice(-2);
-			load(items);
+		public function loadGame() : void {
+			load([int(_cosmoId), _ids[Utils.randomNumber(_ids.length)]]);
 		}
 		
-		public function load(items:Array) : void {			
+		private function load(items:Array) : void {			
 			if(!Utils.isNullOrEmpty(items[0]) && !Utils.isNullOrEmpty(items[1])) {
 				clue.text = "";
 				title_one.text = "";
@@ -61,18 +63,22 @@
 		}
 		
 		private function onKeyboardDown(e:KeyboardEvent) : void {
+			stage.removeEventListener(KeyboardEvent.KEY_DOWN, onKeyboardDown);
+			
+			var correct:Boolean;
 			switch(e.keyCode) {
 				case KeyboardConstant.LEFT_ARROW:
-					clue.textColor = (_assetOne.cast.indexOf(clue.text) > -1) ? 0x00FF00 : 0xFF0000;
-					TweenLite.killTweensOf(clue);
-					moveOn();
+					correct = (_assetOne.cast.indexOf(clue.text) > -1);
 					break;
 				case KeyboardConstant.RIGHT_ARROW:
-					clue.textColor = (_assetTwo.cast.indexOf(clue.text) > -1) ? 0x00FF00 : 0xFF0000;
-					TweenLite.killTweensOf(clue);
-					moveOn();
+					correct = (_assetTwo.cast.indexOf(clue.text) > -1);
 					break;
 			}
+			
+			_points += correct ? 1 : 0;
+			clue.textColor = correct ? 0x00FF00 : 0xFF0000;
+			TweenLite.killTweensOf(clue);
+			moveOn();
 		}
 		
 		private function onDataLoaded(e:Event) : void {
@@ -101,6 +107,7 @@
 		
 		private function start() : void {		
 			_inProgress = true;
+			_points = 0;
 			
 			_clueCast = _clueCast.concat(_assetOne.cast.slice(0, (_assetOne.cast.length > MAX_ITEMS) ? MAX_ITEMS-1 : _assetOne.cast.length-1));
 			_clueCast = _clueCast.concat(_assetTwo.cast.slice(0, (_assetTwo.cast.length > MAX_ITEMS) ? MAX_ITEMS-1 : _assetTwo.cast.length-1));
@@ -119,6 +126,7 @@
 				circle.y = 283;
 				circle.width = 10;
 				circle.height = 10;
+				circle.alpha = Math.random();
 				TweenLite.to(circle, 1.5, {x:-350, y:-213, alpha: 0, width:1000, height:1000, delay:i*.2, onComplete:destroyIt, onCompleteParams:[circle]});
 				addChildAt(circle, 0);
 				
@@ -127,6 +135,7 @@
 				circle2.y = 283;
 				circle2.width = 10;
 				circle2.height = 10;
+				circle2.alpha = Math.random();
 				TweenLite.to(circle2, 1.5, {x:500, y:-213, alpha: 0, width:1000, height:1000, delay:i*.2 + .1, onComplete:destroyIt, onCompleteParams:[circle2]});
 				addChildAt(circle2, 0);
 				
@@ -151,6 +160,7 @@
 			circle.y = 283;
 			circle.width = 10;
 			circle.height = 10;
+			circle.alpha = Math.random();
 			TweenLite.to(circle, Math.random()*3 + 5, {x:-350, y:-213, alpha: 0, width:1000, height:1000, delay:Math.random(), onComplete:destroyIt, onCompleteParams:[circle]});
 			addChildAt(circle, 0);
 			
@@ -159,6 +169,7 @@
 			circle2.y = 283;
 			circle2.width = 10;
 			circle2.height = 10;
+			circle2.alpha = Math.random();
 			TweenLite.to(circle2, Math.random()*3 + 5, {x:500, y:-213, alpha: 0, width:1000, height:1000, delay:Math.random(), onComplete:destroyIt, onCompleteParams:[circle2]});
 			addChildAt(circle2, 0);
 			
@@ -169,6 +180,7 @@
 		
 		private function nextClue() : void {
 			if(_clueCast.length > 0) {
+				stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyboardDown);
 				clue.alpha = 0;
 				clue.text = _clueCast.shift();
 				clue.textColor = 0xFFFFFF;
@@ -176,6 +188,7 @@
 				TweenLite.to(clue, .25, {alpha:1, onComplete:startFade});
 			} else {
 				_inProgress = false;
+				onGameComplete();
 			}
 		}
 		
@@ -185,6 +198,18 @@
 		
 		private function moveOn() : void {
 			TweenLite.to(clue, .25, {alpha:0, onComplete:nextClue});
+		}
+		
+		private function onGameComplete() : void {
+			dispatchEvent(new Event(Event.COMPLETE));
+		}
+		
+		public function get points() : int {
+			return _points;
+		}
+		
+		public function setCosmoId(s:String) : void {
+			_cosmoId = s;
 		}
 	}
 }

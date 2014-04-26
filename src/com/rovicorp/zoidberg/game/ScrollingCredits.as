@@ -12,6 +12,10 @@
 	
 	public class ScrollingCredits extends ZBClip implements IGame {
 		public static const GAME_TYPE_ID:int = 2;
+		public static const GAME_NAME:String = "Scrolling Credits";
+		public static const GAME_INSTRUCTIONS:String = "Character names will scroll by from left to right.  Score poitns by clicking on the correct characters associated with the movie";
+		
+		
 		private const MAX_ITEMS:int = 10;
 		
 		private var _assetOne:Object = new Object();
@@ -26,6 +30,8 @@
 		
 		private var _movieTitle:TextField;
 		private var _totalPoints:int;
+		private var _cosmoId:String;
+		
 		
 		public function ScrollingCredits() {
 			super();
@@ -36,17 +42,10 @@
 			_movieTitle.selectable = false;
 			addChild(_movieTitle);
 		}
-
 		
-		private function exampleLoad() : void {
-			var ids:Array = Utils.randomize(_ids).slice(0,5);
-			configure(_ids[6]);
-		}
-		
-		public function configure(cosmoId:String) : void {
-			_data = new Object();
-			_data.cosmoId = cosmoId;
-			load([cosmoId].concat(_ids));
+		public function loadGame() : void {
+			_data.cosmoId = _cosmoId;
+			load([_cosmoId].concat(_ids));
 		}
 		
 		private function load(cosmoIds:Array) : void {
@@ -162,6 +161,10 @@
 		
 		public function get points() : int {
 			return _totalPoints;
+		}
+		
+		public function setCosmoId(s:String) : void {
+			_cosmoId = s;
 		}
 	}
 }

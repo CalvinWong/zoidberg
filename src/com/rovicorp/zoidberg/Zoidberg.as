@@ -14,10 +14,12 @@
 		private var _loginScreen:LoginScreen;
 		private var _welcomeScreen:Welcome;
 		private var _searchScreen:Search;
+		private var _gameInstructions:GameInstructions;
 		
-		private var _games:Array = [ScrollingCredits];
+		private var _games:Array = [DisOrDat, ScrollingCredits];
 		private var _currentGame:IGame;
 		private var _currentGameId:int;
+		private var _gamesPlayed:int;
 
 		public function Zoidberg() {
 			ConfigManager.instance;
@@ -27,16 +29,6 @@
 		
 		private function onAddedToStage(e:Event) : void {
 			this.removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
-			
-			//var disOrDat:DisOrDat = new DisOrDat();
-			
-			//var mgr:ManagerRequest = new ManagerRequest();
-			//mgr.addEventListener(Event.COMPLETE, gameCreated);
-			//mgr.createGame(1, 2, 1);
-			
-			//addChild(disOrDat);
-			
-
 			
 			_loginScreen = new LoginScreen();
 			_loginScreen.addEventListener(LoginScreen.USER_SELECTED, onUserSelected);
@@ -51,8 +43,11 @@
 			_searchScreen.addEventListener(GenericDataEvent.DATA_SELECTED, onDataSelected);
 			addChild(_searchScreen);
 			
-			//_loginScreen.visible = false;
-			//showSearch();
+			_gameInstructions = new GameInstructions();
+			_gameInstructions.x = 83;
+			_gameInstructions.y = 105;
+			_gameInstructions.visible = false;
+			addChild(_gameInstructions)
 		}
 		
 		private function onUserSelected(e:Event) : void {
@@ -66,7 +61,6 @@
 		
 		private function finishWelcome() : void {
 			TweenLite.to(_welcomeScreen, .75, {alpha:0, delay:5});
-			
 			showSearch(5);
 		}
 		
@@ -81,16 +75,32 @@
 			
 			var cosmoId = e.data.video.ids.cosmoId;
 			
-			var Game:Class = _games[Utils.randomNumber(_games.length-1)];
+			var Game:Class = _games[_gamesPlayed%_games.length];
 			_currentGame = new Game();
+			_currentGame.setCosmoId(cosmoId);
+			
+			_gameInstructions.game_name.text = Game.GAME_NAME;
+			_gameInstructions.game_instructions.text = Game.GAME_INSTRUCTIONS;
+			_gameInstructions.alpha = 0;
+			_gameInstructions.visible = true;
+			TweenLite.to(_gameInstructions, .5, {alpha:1});
 			
 			var mgr:ManagerRequest = new ManagerRequest();
 			mgr.addEventListener(Event.COMPLETE, onGameCreated);
 			mgr.createSinglePlayerGame(ConfigManager.user.id, Game.GAME_TYPE_ID);
+		}
+		
+		private function onGameCreated(e:Event) {
+			_currentGameId = (e.target as ManagerRequest).data.id;
+			TweenLite.to(_gameInstructions, 1, {alpha: 0, delay: 5, onComplete:onStartGame});
+		}
+		
+		private function onStartGame() : void {
+			hideIt(_gameInstructions);
 			
 			addChild(_currentGame as DisplayObject);
-			(_currentGame as IGame).configure(cosmoId);
 			_currentGame.addEventListener(Event.COMPLETE, onGameCompleted);
+			(_currentGame as IGame).loadGame();
 		}
 		
 		private function onGameCompleted(e:Event) : void {
@@ -102,20 +112,8 @@
 			TweenLite.to(e.target, .5, {alpha:0, onComplete:destroyIt, onCompleteParams:[e.target]});
 		}
 		
-		private function onGameCreated(e:Event) {
-			_currentGameId = (e.target as ManagerRequest).data.id;
-		}
-		
 		private function onScoreRecorded(e:Event) : void {
 			showSearch();
-		}
-		
-		private function gameLoaded(e:Event) {
-			var mgrRequest:ManagerRequest = e.target as ManagerRequest;
-			for each(var game:Object in mgrRequest.data) {
-				trace("Player1: " + game.player1.fullname);
-				trace("Player2: " + game.player2.fullname);
-			}
 		}
 	}
 }

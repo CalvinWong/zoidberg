@@ -3,7 +3,8 @@
 	public interface IGame extends IEventDispatcher {
 
 		// Interface methods:
-		function configure(id:String) : void;
+		function loadGame() : void;
+		function setCosmoId(id:String) : void;
 	}
 	
 }
