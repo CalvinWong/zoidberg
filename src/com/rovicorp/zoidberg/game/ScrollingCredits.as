@@ -13,7 +13,7 @@
 	public class ScrollingCredits extends ZBClip implements IGame {
 		public static const GAME_TYPE_ID:int = 2;
 		public static const GAME_NAME:String = "Scrolling Credits";
-		public static const GAME_INSTRUCTIONS:String = "Character names will scroll by from left to right.  Score poitns by clicking on the correct characters associated with the movie";
+		public static const GAME_INSTRUCTIONS:String = "Character names will scroll by from left to right.  Score points by clicking on the correct characters associated with the movie";
 		
 		private const MAX_ITEMS:int = 10;
 		

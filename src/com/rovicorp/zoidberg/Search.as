@@ -56,9 +56,16 @@
 			var request:SnRRequest = e.target as SnRRequest;
 			var data:Object = request.data.searchResponse;
 			
-			var fourteenOrLess:int = (data.results.length > 14) ? 14 : data.results.length;
+			var imageResults:Array = new Array();
+			for(var k:int = 0; k<data.results.length; k++) {
+				if(data.results[k].video.images != null && data.results[k].video.images.length > 0) {
+					imageResults.push(data.results[k]);
+				}
+			}
+			
+			var fourteenOrLess:int = (imageResults.length > 14) ? 14 : imageResults.length;
 			for(var i:int = 0; i < fourteenOrLess; i++) {
-				var result:Object = data.results[i];
+				var result:Object = imageResults[i];
 				var searchResult:SearchResult = new SearchResult(result);
 				searchResult.x = (i%COLUMNS) * (X_SPACING + SearchResult.CARD_WIDTH);
 				searchResult.y = Math.floor(i/COLUMNS) * (Y_SPACING + SearchResult.CARD_HEIGHT);
