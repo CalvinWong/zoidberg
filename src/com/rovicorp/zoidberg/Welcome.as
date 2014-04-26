@@ -16,7 +16,7 @@
 		protected override function init() : void {
 			var welcomeText:TextField = new TextField();
 			welcomeText.text = "Welcome";
-			welcomeText.setTextFormat(new TextFormat("Arial", 28, 0xFFFFFF));
+			welcomeText.setTextFormat(new TextFormat("Arial", 28, 0xD30027));
 			welcomeText.height = welcomeText.textHeight + 10;
 			welcomeText.width = welcomeText.textWidth + 10;
 			welcomeText.x = stage.stageWidth / 2 - welcomeText.width / 2;

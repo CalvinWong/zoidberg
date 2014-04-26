@@ -32,25 +32,27 @@
 			
 			_loginScreen = new LoginScreen();
 			_loginScreen.addEventListener(LoginScreen.USER_SELECTED, onUserSelected);
-			addChild(_loginScreen);
+			addChildAt(_loginScreen, 0);
 			
 			_welcomeScreen = new Welcome();
 			_welcomeScreen.visible = false;
-			addChild(_welcomeScreen);
+			addChildAt(_welcomeScreen, 0);
 			
 			_searchScreen = new Search();
 			_searchScreen.visible = false;
 			_searchScreen.addEventListener(GenericDataEvent.DATA_SELECTED, onDataSelected);
-			addChild(_searchScreen);
+			addChildAt(_searchScreen, 0);
 			
 			_gameInstructions = new GameInstructions();
+			_gameInstructions.alpha = 0;
 			_gameInstructions.x = 83;
 			_gameInstructions.y = 105;
 			_gameInstructions.visible = false;
-			addChild(_gameInstructions)
+			addChild(_gameInstructions);
 		}
 		
 		private function onUserSelected(e:Event) : void {
+			intro.visible = false;
 			TweenLite.to(_loginScreen, .5, {alpha:0, onComplete:hideIt, onCompleteParams:[_loginScreen]});
 			
 			_welcomeScreen.alpha = 0;
@@ -81,9 +83,8 @@
 			
 			_gameInstructions.game_name.text = Game.GAME_NAME;
 			_gameInstructions.game_instructions.text = Game.GAME_INSTRUCTIONS;
-			_gameInstructions.alpha = 0;
 			_gameInstructions.visible = true;
-			TweenLite.to(_gameInstructions, 1, {alpha:1});
+			TweenLite.to(_gameInstructions, 1, {alpha:100});
 			
 			var mgr:ManagerRequest = new ManagerRequest();
 			mgr.addEventListener(Event.COMPLETE, onGameCreated);

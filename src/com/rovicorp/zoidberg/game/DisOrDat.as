@@ -135,20 +135,20 @@
 			for(var i:int=0; i<3; i++) {
 				var circle:ExpandCircle = new ExpandCircle();
 				circle.x = 145;
-				circle.y = 283;
+				circle.y = 333;
 				circle.width = 10;
 				circle.height = 10;
 				circle.alpha = Math.random();
-				TweenLite.to(circle, 1.5, {x:-350, y:-213, alpha: 0, width:1000, height:1000, delay:i*.2, onComplete:destroyIt, onCompleteParams:[circle]});
+				TweenLite.to(circle, 1.5, {x:-350, y:-163, alpha: 0, width:1000, height:1000, delay:i*.2, onComplete:destroyIt, onCompleteParams:[circle]});
 				addChildAt(circle, 0);
 				
 				var circle2:ExpandCircle = new ExpandCircle();
 				circle2.x = 995;
-				circle2.y = 283;
+				circle2.y = 233;
 				circle2.width = 10;
 				circle2.height = 10;
 				circle2.alpha = Math.random();
-				TweenLite.to(circle2, 1.5, {x:500, y:-213, alpha: 0, width:1000, height:1000, delay:i*.2 + .1, onComplete:destroyIt, onCompleteParams:[circle2]});
+				TweenLite.to(circle2, 1.5, {x:500, y:-263, alpha: 0, width:1000, height:1000, delay:i*.2 + .1, onComplete:destroyIt, onCompleteParams:[circle2]});
 				addChildAt(circle2, 0);
 				
 				title_one.alpha = 0;
@@ -169,20 +169,20 @@
 		private function pulse() {
 			var circle:ExpandCircle = new ExpandCircle();
 			circle.x = 145;
-			circle.y = 283;
+			circle.y = 333;
 			circle.width = 10;
 			circle.height = 10;
 			circle.alpha = Math.random();
-			TweenLite.to(circle, Math.random()*3 + 5, {x:-350, y:-213, alpha: 0, width:1000, height:1000, delay:Math.random(), onComplete:destroyIt, onCompleteParams:[circle]});
+			TweenLite.to(circle, Math.random()*3 + 5, {x:-350, y:-163, alpha: 0, width:1000, height:1000, delay:Math.random(), onComplete:destroyIt, onCompleteParams:[circle]});
 			addChildAt(circle, 0);
 			
 			var circle2:ExpandCircle = new ExpandCircle();
 			circle2.x = 995;
-			circle2.y = 283;
+			circle2.y = 233;
 			circle2.width = 10;
 			circle2.height = 10;
 			circle2.alpha = Math.random();
-			TweenLite.to(circle2, Math.random()*3 + 5, {x:500, y:-213, alpha: 0, width:1000, height:1000, delay:Math.random(), onComplete:destroyIt, onCompleteParams:[circle2]});
+			TweenLite.to(circle2, Math.random()*3 + 5, {x:500, y:-263, alpha: 0, width:1000, height:1000, delay:Math.random(), onComplete:destroyIt, onCompleteParams:[circle2]});
 			addChildAt(circle2, 0);
 			
 			if(_inProgress) {

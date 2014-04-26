@@ -105,7 +105,7 @@
 		private function animateBoardIntro() : void {
 			_movieTitle.alpha = 0;
 			_movieTitle.text = _data.title;
-			_movieTitle.setTextFormat(new TextFormat("Arial", 72, 0xFFFFFF));
+			_movieTitle.setTextFormat(new TextFormat("Franklin Gothic Heavy", 72, 0xD30027));
 			_movieTitle.width = _movieTitle.textWidth + 20;
 			_movieTitle.height = _movieTitle.textHeight;
 			TweenLite.to(_movieTitle, 3, {alpha:1, onComplete:scrollKeywords});
