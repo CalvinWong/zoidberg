@@ -2,13 +2,13 @@
 	import com.rovicorp.zoidberg.ConfigManager;
 	import com.rovicorp.net.RestRequest;
 	
-	public class DisOrDatRequest extends RestRequest {
+	public class ManagerRequest extends RestRequest {
 
-		public function DisOrDatRequest() {
-			super(ConfigManager.data.baseUrl, "&apikey=123");
+		public function ManagerRequest() {
+			super(ConfigManager.persistence.baseUrl, "");
 		}
 		
-		public function loadIds(cosmoIdOne:String, cosmoIdTwo:String) : void {
+		public function loadPlayerIds() : void {
 			var endpoint:String = "/video/batch?cosmoid=" + cosmoIdOne + "," + cosmoIdTwo + "&include=cast";
 			super.load(endpoint);
 		}

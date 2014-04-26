@@ -1,5 +1,4 @@
 ﻿package com.rovicorp.net {
-	import com.rovicorp.zoidberg.ConfigManager;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	import flash.events.Event;
@@ -10,9 +9,9 @@
 		private var _apiKey:String;
 		private var _urlLoader:URLLoader;
 		
-		public function RestRequest() {
-			_baseUrl = ConfigManager.data.baseUrl;
-			_apiKey = "&apikey=123";
+		public function RestRequest(baseUrl:String, apiKey:String) {
+			_apiKey = apiKey
+			_baseUrl = baseUrl;
 		}
 		
 		public function load(endpoint:String) : void {
