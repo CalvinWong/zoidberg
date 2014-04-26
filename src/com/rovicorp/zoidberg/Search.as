@@ -14,10 +14,8 @@
 	
 	public class Search extends ZBClip {
 		private const COLUMNS:int = 7;
-		private const X_SPACING:int = 20;
+		private const X_SPACING:int = 25;
 		private const Y_SPACING:int = 20;
-		private const CARD_HEIGHT:int = 240;
-		private const CARD_WIDTH:int = 135;
 		
 		private var _searchBar:SearchBar;
 		private var _results:Sprite;
@@ -28,6 +26,11 @@
 		
 		private function onAddedToStage(e:Event) : void {
 			this.removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
+			
+			_results = new Sprite();
+			_results.x = 50;
+			_results.y = 70;
+			addChild(_results);			
 			
 			_searchBar = new SearchBar();
 			_searchBar.x = 115;
@@ -45,6 +48,8 @@
 				var request:SnRRequest = new SnRRequest();
 				request.searchVideo(searchQuery, entityTypes, includes);
 				request.addEventListener(Event.COMPLETE, onRequestComplete);
+				
+				destroyChildren(_results, true, true);
 			}
 		}
 		
@@ -52,15 +57,11 @@
 			var request:SnRRequest = e.target as SnRRequest;
 			var data:Object = request.data.searchResponse;
 			
-			_results = new Sprite();
-			_results.x = 40;
-			_results.y = 50;
-			addChild(_results);
 			for(var i:int = 0; i < data.results.length; i++) {
 				var result:Object = data.results[i];
 				var searchResult:SearchResult = new SearchResult(result);
-				searchResult.x = (i%COLUMNS) * (X_SPACING + CARD_WIDTH);
-				searchResult.y = Math.floor(i/COLUMNS) * (Y_SPACING + CARD_HEIGHT);
+				searchResult.x = (i%COLUMNS) * (X_SPACING + SearchResult.CARD_WIDTH);
+				searchResult.y = Math.floor(i/COLUMNS) * (Y_SPACING + SearchResult.CARD_HEIGHT);
 				_results.addChild(searchResult);
 			}
 		}

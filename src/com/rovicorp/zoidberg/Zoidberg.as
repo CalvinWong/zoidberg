@@ -1,11 +1,15 @@
 ﻿package com.rovicorp.zoidberg {
-	import flash.display.MovieClip;
 	import flash.events.Event;
 	import com.rovicorp.zoidberg.game.DisOrDat;
 	import com.rovicorp.zoidberg.net.ManagerRequest;
 	import com.rovicorp.zoidberg.game.ScrollingCredits;
+	import com.greensock.TweenLite;
+	import com.rovicorp.display.ZBClip;
 	
-	public class Zoidberg extends MovieClip {
+	public class Zoidberg extends ZBClip {
+		private var _loginScreen:LoginScreen;
+		private var _welcomeScreen:Welcome;
+		private var _searchScreen:Search;
 
 		public function Zoidberg() {
 			ConfigManager.instance;
@@ -15,9 +19,6 @@
 		
 		private function onAddedToStage(e:Event) : void {
 			this.removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
-			
-			var search:Search = new Search();
-			addChild(search);
 			
 			//var disOrDat:DisOrDat = new DisOrDat();
 			
@@ -30,8 +31,34 @@
 			//var scrollingCredits:ScrollingCredits = new ScrollingCredits();
 			//addChild(scrollingCredits);
 			
-			//var loginScreen:LoginScreen = new LoginScreen();
-			//addChild(loginScreen);
+			_loginScreen = new LoginScreen();
+			_loginScreen.addEventListener(LoginScreen.USER_SELECTED, onUserSelected);
+			addChild(_loginScreen);
+			
+			_welcomeScreen = new Welcome();
+			_welcomeScreen.visible = false;
+			addChild(_welcomeScreen);
+			
+			_searchScreen = new Search();
+			_searchScreen.visible = false;
+			addChild(_searchScreen);
+		}
+		
+		private function onUserSelected(e:Event) : void {
+			TweenLite.to(_loginScreen, .5, {alpha:0, onComplete:hideIt, onCompleteParams:[_loginScreen]});
+			
+			_welcomeScreen.alpha = 0;
+			_welcomeScreen.visible = true;
+			_welcomeScreen.onUserLoaded(null); // spoof event loaded
+			TweenLite.to(_welcomeScreen, .75, {alpha:1, onComplete:finishWelcome});
+		}
+		
+		private function finishWelcome() : void {
+			TweenLite.to(_welcomeScreen, .75, {alpha:0, delay:5});
+			
+			_searchScreen.alpha = 0;
+			_searchScreen.visible = true;
+			TweenLite.to(_searchScreen, 1, {alpha:1, delay:5});
 		}
 		
 		private function gameCreated(e:Event) {

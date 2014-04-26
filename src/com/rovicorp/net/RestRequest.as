@@ -2,6 +2,8 @@
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	import flash.events.Event;
+	import flash.events.ErrorEvent;
+	import flash.events.IOErrorEvent;
 	import flash.events.EventDispatcher;
 	
 	public class RestRequest extends EventDispatcher {		
@@ -19,11 +21,16 @@
 			
 			_urlLoader = new URLLoader();
 			_urlLoader.addEventListener(Event.COMPLETE, onComplete);
+			_urlLoader.addEventListener(IOErrorEvent.IO_ERROR, onIOError);
 			_urlLoader.load(new URLRequest(url));
 		}
 		
+		private function onIOError(e:Event) : void {
+			dispatchEvent(new ErrorEvent(ErrorEvent.ERROR));
+		}
+		
 		private function onComplete(e:Event) : void {
-			this.dispatchEvent(new Event(Event.COMPLETE));
+			dispatchEvent(new Event(Event.COMPLETE));
 		}
 		
 		public function get data() : Object {

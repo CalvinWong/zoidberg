@@ -23,6 +23,10 @@
 			loader.contentLoaderInfo.addEventListener(Event.COMPLETE, onComplete);
 			loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, onError);
 			loader.load(new URLRequest(url));
+			
+			while(this.numChildren > 0) {
+				removeChildAt(0);
+			}
 		}
 		
 		function onComplete(e:Event):void
