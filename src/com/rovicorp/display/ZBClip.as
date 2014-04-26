@@ -1,6 +1,7 @@
 ﻿package com.rovicorp.display {
 	import flash.display.MovieClip;
 	import flash.events.Event;
+	import flash.display.DisplayObject;
 	
 	public class ZBClip extends MovieClip {
 		public function ZBClip() {
@@ -14,6 +15,13 @@
 		}
 		
 		protected function init() : void {
+		}
+		
+		protected function destroyIt(displayObject:DisplayObject) : void {
+			if(this.contains(displayObject)) {
+				removeChild(displayObject);
+				displayObject = null;
+			}
 		}
 	}
 }

@@ -7,9 +7,9 @@
 			super();
 		}
 		
-		public function lookUp(cosmoIdOne:String, cosmoIdTwo:String) : void {
+		public function loadIds(cosmoIdOne:String, cosmoIdTwo:String) : void {
 			var endpoint:String = "/video/batch?cosmoid=" + cosmoIdOne + "," + cosmoIdTwo + "&include=cast";
-			load(endpoint);
+			super.load(endpoint);
 		}
 	}
 }
