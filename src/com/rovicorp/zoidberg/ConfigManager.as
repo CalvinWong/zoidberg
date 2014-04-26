@@ -20,7 +20,7 @@
 			_data.api = api;
 			_data.baseUrl = "http://rcs.rovicorp.com/v1.1";
 			
-			_persistence.baseUrl = "http://stormy-stream-2810.herokuapp.com/"
+			_persistence.baseUrl = "http://stormy-stream-2810.herokuapp.com"
 		}
 		
 		public static function get instance() : ConfigManager {
