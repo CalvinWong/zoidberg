@@ -21,9 +21,9 @@
 			
 			//var disOrDat:DisOrDat = new DisOrDat();
 			
-			var mgr:ManagerRequest = new ManagerRequest();
-			mgr.addEventListener(Event.COMPLETE, gameCreated);
-			mgr.createGame(1, 2, 1);
+			//var mgr:ManagerRequest = new ManagerRequest();
+			//mgr.addEventListener(Event.COMPLETE, gameCreated);
+			//mgr.createGame(1, 2, 1);
 			
 			//addChild(disOrDat);
 			

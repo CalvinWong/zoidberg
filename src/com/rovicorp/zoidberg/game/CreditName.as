@@ -19,8 +19,8 @@
 		}
 		
 		protected override function init() : void {
-			var fontSize:int = Utils.randomNumber(12)*2 + 14;
-			var textFormat:TextFormat = new TextFormat("ZB_Arial", fontSize, 0xFFFFFF);
+			var fontSize:int = Utils.randomNumber(10)*2 + 18;
+			var textFormat:TextFormat = new TextFormat("Arial", fontSize, 0xFFFFFF);
 			_textfield = new TextField();
 			_textfield.text = _name;
 			_textfield.setTextFormat(textFormat);

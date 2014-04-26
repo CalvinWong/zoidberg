@@ -11,7 +11,7 @@
 	import com.greensock.easing.Linear;
 	
 	public class ScrollingCredits extends ZBClip {
-		private const MAX_ITEMS:int = 15;
+		private const MAX_ITEMS:int = 10;
 		
 		private var _assetOne:Object = new Object();
 		private var _clueCast:Array = new Array();
@@ -97,12 +97,12 @@
 				_keywords = Utils.randomize(_keywords.slice(0, MAX_ITEMS));
 			}
 			_invalidKeywords = Utils.randomize(_data.invalidCredits);
+			_invalidKeywords = _invalidKeywords.slice(0, (_keywords.length*3 > _invalidKeywords.length) ? _invalidKeywords.length : _keywords.length*3);
 			
 			animateBoardIntro();
 		}
 		
 		private function animateBoardIntro() : void {
-			trace("animateBoardIntro");
 			_movieTitle.alpha = 0;
 			_movieTitle.text = _data.title;
 			_movieTitle.setTextFormat(new TextFormat("Arial", 72, 0xFFFFFF));
@@ -118,7 +118,7 @@
 				invalidKeyword.x = -invalidKeyword.width;
 				invalidKeyword.y = Utils.randomNumber(550) + 75;
 				invalidKeyword.alpha = .2 + Utils.randomNumber(35)/100;
-				TweenLite.to(invalidKeyword, 15 + Utils.randomNumber(45), {x:1200, ease:Linear.easeNone, delay:Utils.randomNumber(25) + Utils.randomNumber(99)/100, onComplete:destroyIt, onCompleteParams:[invalidKeyword, false]})
+				TweenLite.to(invalidKeyword, 10 + Utils.randomNumber(40), {x:1200, ease:Linear.easeNone, delay:Utils.randomNumber(45) + Utils.randomNumber(99)/100, onComplete:destroyIt, onCompleteParams:[invalidKeyword, false]})
 				
 			}
 			
@@ -127,8 +127,8 @@
 				addChild(validKeyword);
 				validKeyword.x = -validKeyword.width;
 				validKeyword.y = Utils.randomNumber(550) + 75;
-				validKeyword.alpha = .2 + Utils.randomNumber(35)/100;
-				TweenLite.to(validKeyword, 15 + Utils.randomNumber(45), {x:1200, ease:Linear.easeNone, delay: Utils.randomNumber(25) + Utils.randomNumber(99)/100, onComplete:destroyIt, onCompleteParams:[validKeyword, false]})
+				validKeyword.alpha = .25 + Utils.randomNumber(45)/100;
+				TweenLite.to(validKeyword, 10 + Utils.randomNumber(40), {x:1200, ease:Linear.easeNone, delay: Utils.randomNumber(45) + Utils.randomNumber(99)/100, onComplete:destroyIt, onCompleteParams:[validKeyword, false]})
 			}
 		}
 	}
