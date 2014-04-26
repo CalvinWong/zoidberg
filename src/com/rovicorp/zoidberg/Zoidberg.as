@@ -71,7 +71,7 @@
 		}
 		
 		private function onDataSelected(e:GenericDataEvent) : void {
-			TweenLite.to(_searchScreen, 1, {alpha:0, onComplete:hideIt, onCompleteParams:[_searchScreen]});
+			TweenLite.to(_searchScreen, .25, {alpha:0, onComplete:hideIt, onCompleteParams:[_searchScreen]});
 			
 			var cosmoId = e.data.video.ids.cosmoId;
 			
@@ -83,7 +83,7 @@
 			_gameInstructions.game_instructions.text = Game.GAME_INSTRUCTIONS;
 			_gameInstructions.alpha = 0;
 			_gameInstructions.visible = true;
-			TweenLite.to(_gameInstructions, .5, {alpha:1});
+			TweenLite.to(_gameInstructions, 1, {alpha:1});
 			
 			var mgr:ManagerRequest = new ManagerRequest();
 			mgr.addEventListener(Event.COMPLETE, onGameCreated);
@@ -110,6 +110,7 @@
 			mgr.finishSinglePlayerGame(_currentGameId, game.points);
 			
 			TweenLite.to(e.target, .5, {alpha:0, onComplete:destroyIt, onCompleteParams:[e.target]});
+			_gamesPlayed++;
 		}
 		
 		private function onScoreRecorded(e:Event) : void {

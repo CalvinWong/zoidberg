@@ -28,12 +28,12 @@
 		protected override function init() : void {
 			_results = new Sprite();
 			_results.x = 50;
-			_results.y = 70;
+			_results.y = 100;
 			addChild(_results);			
 			
 			_searchBar = new SearchBar();
 			_searchBar.x = 315;
-			_searchBar.y = 17;
+			_searchBar.y = 25;
 			_searchBar.search_field.addEventListener(KeyboardEvent.KEY_UP, onKeyboardKeyUp);
 			addChild(_searchBar);
 		}
@@ -56,7 +56,8 @@
 			var request:SnRRequest = e.target as SnRRequest;
 			var data:Object = request.data.searchResponse;
 			
-			for(var i:int = 0; i < data.results.length; i++) {
+			var fourteenOrLess:int = (data.results.length > 14) ? 14 : data.results.length;
+			for(var i:int = 0; i < fourteenOrLess; i++) {
 				var result:Object = data.results[i];
 				var searchResult:SearchResult = new SearchResult(result);
 				searchResult.x = (i%COLUMNS) * (X_SPACING + SearchResult.CARD_WIDTH);

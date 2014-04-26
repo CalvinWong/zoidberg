@@ -15,7 +15,6 @@
 		public static const GAME_NAME:String = "Scrolling Credits";
 		public static const GAME_INSTRUCTIONS:String = "Character names will scroll by from left to right.  Score poitns by clicking on the correct characters associated with the movie";
 		
-		
 		private const MAX_ITEMS:int = 10;
 		
 		private var _assetOne:Object = new Object();
@@ -29,7 +28,7 @@
 		private var _invalidKeywords:Array;
 		
 		private var _movieTitle:TextField;
-		private var _totalPoints:int;
+		private var _points:int;
 		private var _cosmoId:String;
 		
 		
@@ -44,6 +43,7 @@
 		}
 		
 		public function loadGame() : void {
+			_data = new Object();
 			_data.cosmoId = _cosmoId;
 			load([_cosmoId].concat(_ids));
 		}
@@ -90,7 +90,7 @@
 		
 		private function start() : void {		
 			_inProgress = true;
-			_totalPoints = 0;
+			_points = 0;
 			
 			_keywords = _data.validCredits.concat();
 			if(_keywords.length > MAX_ITEMS) {
@@ -122,6 +122,7 @@
 				invalidKeyword.x = -invalidKeyword.width;
 				invalidKeyword.y = Utils.randomNumber(550) + 75;
 				invalidKeyword.alpha = .2 + Utils.randomNumber(35)/100;
+				invalidKeyword.addEventListener(CreditName.WRONG, onPointDeduct);
 				tweenTime = 10 + Utils.randomNumber(40);
 				delayTime = Utils.randomNumber(45) + Utils.randomNumber(99)/100;
 				TweenLite.to(invalidKeyword, tweenTime, {x:1200, ease:Linear.easeNone, delay:delayTime, onComplete:destroyIt, onCompleteParams:[invalidKeyword, false]})
@@ -137,7 +138,7 @@
 				validKeyword.x = -validKeyword.width;
 				validKeyword.y = Utils.randomNumber(550) + 75;
 				validKeyword.alpha = .25 + Utils.randomNumber(45)/100;
-				validKeyword.addEventListener(Event.SELECT, onPointScored);
+				validKeyword.addEventListener(CreditName.RIGHT, onPointScored);
 				tweenTime = 10 + Utils.randomNumber(40);
 				delayTime = Utils.randomNumber(45) + Utils.randomNumber(99)/100;
 				TweenLite.to(validKeyword, 10 + Utils.randomNumber(40), {x:1200, ease:Linear.easeNone, delay: Utils.randomNumber(45) + Utils.randomNumber(99)/100, onComplete:destroyIt, onCompleteParams:[validKeyword, false]})
@@ -152,7 +153,17 @@
 		}
 		
 		private function onPointScored(e:Event) : void {
-			_totalPoints++;
+			_points++;
+			current_score.text = String(_points);
+		}
+		
+		private function onPointDeduct(e:Event) : void {
+			if(_points <= 0) {
+				_points = 0;
+			} else {
+				_points--;
+			}
+			current_score.text = String(_points);
 		}
 		
 		private function onGameFinished() : void {
@@ -160,7 +171,7 @@
 		}
 		
 		public function get points() : int {
-			return _totalPoints;
+			return _points;
 		}
 		
 		public function setCosmoId(s:String) : void {

@@ -10,8 +10,10 @@
 	import flash.events.Event;
 	
 	public class CreditName extends ZBClip {
+		public static const WRONG:String = "CreditName.WRONG";
+		public static const RIGHT:String = "CreditName.RIGHT";
 		private var _valid:Boolean;
-		public var _name:String;
+		private var _name:String;
 		private var _textfield:TextField;
 		
 		public function CreditName(s:String, valid:Boolean = false) {
@@ -30,20 +32,18 @@
 			_textfield.selectable = false;
 			addChild(_textfield);
 			
-			if(_valid) {
-				var invisLayer:Sprite = new Sprite();
-				invisLayer.graphics.beginFill(0x000000, 0);
-				invisLayer.graphics.drawRect(0, 0, _textfield.width, _textfield.height);
-				invisLayer.graphics.endFill();
-				this.addEventListener(MouseEvent.CLICK, onCorrect);
-				addChild(invisLayer);
-			}
+			var invisLayer:Sprite = new Sprite();
+			invisLayer.graphics.beginFill(0x000000, 0);
+			invisLayer.graphics.drawRect(0, 0, _textfield.width, _textfield.height);
+			invisLayer.graphics.endFill();
+			this.addEventListener(MouseEvent.CLICK, onCorrect);
+			addChild(invisLayer);
 		}
 		
 		private function onCorrect(e:MouseEvent) : void {
-			_textfield.textColor = 0x00FF00;
 			this.removeEventListener(MouseEvent.CLICK, onCorrect);
-			dispatchEvent(new Event(Event.SELECT));
+			_textfield.textColor = _valid ? 0x00FF00 : 0xFF0000;
+			dispatchEvent(new Event(_valid ? RIGHT : WRONG));
 		}
 	}
 }

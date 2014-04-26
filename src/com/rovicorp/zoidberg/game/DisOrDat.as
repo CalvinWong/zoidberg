@@ -75,7 +75,11 @@
 					break;
 			}
 			
-			_points += correct ? 1 : 0;
+			_points += correct ? 1 : -1;
+			if(_points <= 0) {
+				_points = 0;
+			}
+			current_score.text = String(_points);
 			clue.textColor = correct ? 0x00FF00 : 0xFF0000;
 			TweenLite.killTweensOf(clue);
 			moveOn();
@@ -88,15 +92,23 @@
 			for each(var video:Object in data.videos) {
 				if(_assetOne.id == video.ids.cosmoId) {
 					for each(var castCredit in video.cast) {
-						_assetOne.cast.push(castCredit.name);
-						_assetOne.cast.push(castCredit.partName);
+						if(castCredit.name != null) {
+							_assetOne.cast.push(castCredit.name);
+						}
+						if(castCredit.partName != null) {
+							_assetOne.cast.push(castCredit.partName);
+						}
 					}
 					_assetOne.title = video.masterTitle;
 				}
 				if(_assetTwo.id == video.ids.cosmoId) {
 					for each(var castCredit2 in video.cast) {
-						_assetTwo.cast.push(castCredit2.name);
-						_assetTwo.cast.push(castCredit2.partName);
+						if(castCredit2.name != null) {
+							_assetTwo.cast.push(castCredit2.name);
+						}
+						if(castCredit2.partName != null) {
+							_assetTwo.cast.push(castCredit2.partName);
+						}
 					}
 					_assetTwo.title = video.masterTitle;
 				}
