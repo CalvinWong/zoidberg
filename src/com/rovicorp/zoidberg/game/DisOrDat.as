@@ -5,7 +5,7 @@
 	import com.rovicorp.constant.KeyboardConstant;
 	import com.rovicorp.display.ZBClip;
 	import com.rovicorp.utils.Utils;
-	import com.rovicorp.zoidberg.net.DisOrDatRequest;
+	import com.rovicorp.zoidberg.net.MovieBatchRequest;
 	
 	import com.rovicorp.utils.Utils;
 	
@@ -13,7 +13,7 @@
 	
 
 	public class DisOrDat extends ZBClip {
-		private const MAX_ITEMS = 15;
+		private const MAX_ITEMS:int = 15;
 		
 		private var _assetOne:Object = new Object();
 		private var _assetTwo:Object = new Object();
@@ -36,37 +36,31 @@
 		
 		public function exampleLoad() : void {
 			var items:Array = Utils.randomize(_ids).slice(-2);
-			load(String(items[0]), String(items[1]));
+			load(items);
 		}
 		
-		public function load(cosmoIdOne:String, cosmoIdTwo:String) : void {			
-			if(!Utils.isNullOrEmpty(cosmoIdOne) && !Utils.isNullOrEmpty(cosmoIdTwo)) {
+		public function load(items:Array) : void {			
+			if(!Utils.isNullOrEmpty(items[0]) && !Utils.isNullOrEmpty(items[1])) {
 				clue.text = "";
 				title_one.text = "";
 				title_two.text = "";
 				
 				_assetOne = new Object();
 				_assetTwo = new Object();
-				_assetOne.id = Utils.trim(cosmoIdOne);
-				_assetTwo.id = Utils.trim(cosmoIdTwo);
+				_assetOne.id = Utils.trim(items[0]);
+				_assetTwo.id = Utils.trim(items[1]);
 				_assetOne.cast = new Array();
 				_assetTwo.cast = new Array();				
 				
-				var dodRequest:DisOrDatRequest = new DisOrDatRequest();
-				dodRequest.addEventListener(Event.COMPLETE, dataLoaded);
-				dodRequest.loadIds(cosmoIdOne, cosmoIdTwo);
+				var includes:Array = ["cast"];
+				var mbRequest:MovieBatchRequest = new MovieBatchRequest();
+				mbRequest.addEventListener(Event.COMPLETE, onDataLoaded);
+				mbRequest.loadIds(items, includes);
 			}
 		}
 		
 		private function onKeyboardDown(e:KeyboardEvent) : void {
 			switch(e.keyCode) {
-				/*
-				case KeyboardConstant.ENTER:
-					if(!_inProgress) {
-						lookUpIds();
-					}
-					break;
-				*/
 				case KeyboardConstant.LEFT_ARROW:
 					clue.textColor = (_assetOne.cast.indexOf(clue.text) > -1) ? 0x00FF00 : 0xFF0000;
 					TweenLite.killTweensOf(clue);
@@ -80,10 +74,10 @@
 			}
 		}
 		
-		private function dataLoaded(e:Event) : void {
-			var dodRequest:DisOrDatRequest = e.target as DisOrDatRequest;
+		private function onDataLoaded(e:Event) : void {
+			var mbRequest:MovieBatchRequest = e.target as MovieBatchRequest;
+			var data:Object = mbRequest.data;
 			
-			var data:Object = dodRequest.data;			
 			for each(var video:Object in data.videos) {
 				if(_assetOne.id == video.ids.cosmoId) {
 					for each(var castCredit in video.cast) {

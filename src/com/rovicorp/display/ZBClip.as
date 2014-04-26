@@ -17,10 +17,12 @@
 		protected function init() : void {
 		}
 		
-		protected function destroyIt(displayObject:DisplayObject) : void {
+		protected function destroyIt(displayObject:DisplayObject, nullify:Boolean = true) : void {
 			if(this.contains(displayObject)) {
 				removeChild(displayObject);
-				displayObject = null;
+				if(nullify) {
+					displayObject = null;
+				}
 			}
 		}
 	}

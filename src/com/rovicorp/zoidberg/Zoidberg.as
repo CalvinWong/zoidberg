@@ -3,6 +3,7 @@
 	import flash.events.Event;
 	import com.rovicorp.zoidberg.game.DisOrDat;
 	import com.rovicorp.zoidberg.net.ManagerRequest;
+	import com.rovicorp.zoidberg.game.ScrollingCredits;
 	
 	public class Zoidberg extends MovieClip {
 
@@ -18,13 +19,16 @@
 			//var search:Search = new Search();
 			//addChild(search);
 			
-			var disOrDat:DisOrDat = new DisOrDat();
+			//var disOrDat:DisOrDat = new DisOrDat();
 			
 			var mgr:ManagerRequest = new ManagerRequest();
 			mgr.addEventListener(Event.COMPLETE, gameCreated);
 			mgr.createGame(1, 2, 1);
 			
-			addChild(disOrDat);
+			//addChild(disOrDat);
+			
+			var scrollingCredits:ScrollingCredits = new ScrollingCredits();
+			addChild(scrollingCredits);
 		}
 		
 		private function gameCreated(e:Event) {

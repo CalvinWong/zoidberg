@@ -11,15 +11,7 @@
 			_data = new Object();
 			_persistence = new Object();
 			
-			var api:Array = new Array();
-			var videoApi:Object = new Object();
-			videoApi.endpoint = "/video";
-			videoApi.query = "video=";
-			api.push(videoApi);
-			
-			_data.api = api;
 			_data.baseUrl = "http://rcs.rovicorp.com/v1.1";
-			
 			_persistence.baseUrl = "http://stormy-stream-2810.herokuapp.com"
 		}
 		

@@ -9,7 +9,7 @@
 		private var _apiKey:String;
 		private var _urlLoader:URLLoader;
 		
-		public function RestRequest(baseUrl:String, apiKey:String) {
+		public function RestRequest(baseUrl:String, apiKey:String = "") {
 			_apiKey = apiKey
 			_baseUrl = baseUrl;
 		}

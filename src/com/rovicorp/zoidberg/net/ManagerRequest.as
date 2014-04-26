@@ -5,7 +5,7 @@
 	public class ManagerRequest extends RestRequest {
 
 		public function ManagerRequest() {
-			super(ConfigManager.persistence.baseUrl, "");
+			super(ConfigManager.persistence.baseUrl);
 		}
 		
 		public function loadPlayers() : void {
